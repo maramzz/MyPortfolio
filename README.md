@@ -21,4 +21,3 @@ samples, guidance on mobile development, and a full API reference.
 A Flutter mobile application showcasing two independent student portfolios, skills, projects, and academic journeys.
 
 
->>>>>>> 9627ede3221fabef413555b32ab9563593a38122
