@@ -1,5 +1,7 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+
 import 'pages/home_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -87,8 +89,9 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F7F9),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -113,13 +116,13 @@ class _SplashScreenState extends State<SplashScreen>
               opacity: _titleOpacity,
               child: SlideTransition(
                 position: _titleOffset,
-                child: const Text(
+                child: Text(
                   'MyPortfolio',
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.w900,
                     letterSpacing: -0.5,
-                    color: Color(0xFF1A1A1A),
+                    color: colorScheme.onSurface,
                   ),
                 ),
               ),
