@@ -1,40 +1,35 @@
-# MyPortfolio 📱
+# My Portfolio
 
-A Flutter mobile application showcasing two student portfolios in one app. The project highlights personal information, academic backgrounds, technical skills, and projects through a clean and interactive mobile experience.
+A personal portfolio mobile application built with Flutter. It presents my profile, interests, skills, and projects in a clean, simple interface.
 
-## ✨ Features
+## Features
 
-- **Student Profiles** — Explore two independent portfolios.
-- **Personal & Academic Information** — Present education and personal details.
-- **Skills & Projects** — Showcase technical skills and completed projects.
-- **Portfolio Management** — Add, edit, and delete information.
-- **Data Persistence** — Keep information saved between app sessions.
-- **REST API Integration** — Retrieve data from an external API.
-- **Smooth Navigation** — Navigate between screens with an intuitive interface.
+- Animated splash screen
+- Smooth transition into the portfolio home page
+- Custom application branding and logo
+- Responsive Material 3 interface
+- DM Sans and Playfair Display typography
 
-## 🛠️ Technologies
+## Technologies
 
 - Flutter
 - Dart
-- REST API
-- Local data persistence *(implementation to be determined)*
-- Git & GitHub
+- Material 3
+- Google Fonts
 
-## 🚧 Project Status
+## Project Status
 
-In development.
+This portfolio is under active development. More personal information, portfolio sections, and project details will be added over time.
 
-This project is being developed as part of a mobile application development course.
-
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- [Flutter SDK](https://docs.flutter.dev/get-started/install)
-- [Dart SDK](https://dart.dev/get-dart)
-- [Visual Studio Code](https://code.visualstudio.com/) or another Flutter-compatible IDE
+- Flutter SDK
+- Dart SDK
+- An IDE with Flutter support, such as Visual Studio Code
 
-### Run the application
+### Installation
 
 1. Clone the repository:
 
@@ -42,7 +37,7 @@ This project is being developed as part of a mobile application development cour
    git clone https://github.com/maramzz/MyPortfolio.git
    ```
 
-2. Navigate to the project directory:
+2. Enter the project directory:
 
    ```bash
    cd MyPortfolio
@@ -59,6 +54,24 @@ This project is being developed as part of a mobile application development cour
    ```bash
    flutter run
    ```
---
 
-*Built with Flutter as a student project.*
+## Project Structure
+
+```text
+lib/
+  main.dart                 # Application entry point
+  splash_screen.dart        # Animated launch screen
+  pages/
+    home_page.dart          # Portfolio home page
+  theme/
+    app_theme.dart          # Colors and text styles
+assets/
+  images/
+    logo.png                # Application logo
+```
+
+## Author
+
+**Maram**
+
+GitHub: [maramzz](https://github.com/maramzz)
