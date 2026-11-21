@@ -16,6 +16,7 @@ class _SplashScreenState extends State<SplashScreen>
   late final AnimationController _entranceController;
   late final Animation<double> _logoOpacity;
   late final Animation<double> _logoScale;
+  late final Animation<Offset> _logoOffset;
   late final Animation<double> _titleOpacity;
   late final Animation<Offset> _titleOffset;
   Timer? _navigationTimer;
@@ -27,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen>
     _entranceController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1100),
-    )..forward();
+    );
 
     _logoOpacity = CurvedAnimation(
       parent: _entranceController,
@@ -39,6 +40,13 @@ class _SplashScreenState extends State<SplashScreen>
         curve: const Interval(0, 0.75, curve: Curves.easeOutCubic),
       ),
     );
+    _logoOffset = Tween<Offset>(begin: const Offset(0, 0.28), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: _entranceController,
+            curve: const Interval(0, 0.8, curve: Curves.easeOutCubic),
+          ),
+        );
     _titleOpacity = CurvedAnimation(
       parent: _entranceController,
       curve: const Interval(0.25, 1, curve: Curves.easeOutCubic),
@@ -50,14 +58,19 @@ class _SplashScreenState extends State<SplashScreen>
             curve: const Interval(0.25, 1, curve: Curves.easeOutCubic),
           ),
         );
+    _startSplash();
+  }
 
+  void _startSplash() {
+    _entranceController.forward(from: 0);
+    _navigationTimer?.cancel();
     _navigationTimer = Timer(const Duration(seconds: 2), () {
       if (!mounted) return;
 
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
-          transitionDuration: const Duration(milliseconds: 900),
+          transitionDuration: const Duration(milliseconds: 600),
           pageBuilder: (_, _, _) => const HomePage(),
           transitionsBuilder: (_, animation, _, child) {
             final curvedAnimation = CurvedAnimation(
@@ -96,17 +109,22 @@ class _SplashScreenState extends State<SplashScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            FadeTransition(
-              opacity: _logoOpacity,
-              child: ScaleTransition(
-                scale: _logoScale,
-                child: Hero(
-                  tag: 'logoTag',
-                  child: Image.asset(
-                    'assets/images/logo.png',
-                    height: 80,
-                    width: 80,
-                    fit: BoxFit.contain,
+            SlideTransition(
+              key: const ValueKey('splash-logo-slide'),
+              position: _logoOffset,
+              child: FadeTransition(
+                key: const ValueKey('splash-logo-fade'),
+                opacity: _logoOpacity,
+                child: ScaleTransition(
+                  scale: _logoScale,
+                  child: Hero(
+                    tag: 'portfolio-logo',
+                    child: Image.asset(
+                      'assets/images/logo.png',
+                      height: 80,
+                      width: 80,
+                      fit: BoxFit.contain,
+                    ),
                   ),
                 ),
               ),

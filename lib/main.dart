@@ -1,21 +1,113 @@
 import 'package:flutter/material.dart';
+
+import 'pages/contact_page.dart';
+import 'pages/about_page.dart';
+import 'pages/experience_page.dart';
+import 'pages/home_page.dart';
+import 'pages/projects_page.dart';
+import 'pages/skills_page.dart';
 import 'splash_screen.dart';
 import 'theme/app_theme.dart';
+import 'theme/theme_mode_controller.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp> {
+  late final ThemeModeController _themeController;
+  GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+  bool _startAtHome = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _themeController = ThemeModeController();
+  }
+
+  @override
+  void dispose() {
+    _themeController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void reassemble() {
+    resetForReload();
+    super.reassemble();
+  }
+
+  @visibleForTesting
+  void resetForReload() {
+    setState(() {
+      _themeController.setDarkMode(false);
+      _startAtHome = true;
+      _navigatorKey = GlobalKey<NavigatorState>();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'My Portfolio',
-      theme: AppTheme.light,
-      home: const SplashScreen(),
+    return AnimatedBuilder(
+      animation: _themeController,
+      builder: (context, _) {
+        return MaterialApp(
+          navigatorKey: _navigatorKey,
+          debugShowCheckedModeBanner: false,
+          title: 'My Portfolio',
+          theme: AppTheme.light,
+          darkTheme: AppTheme.dark,
+          themeMode: _themeController.mode,
+          builder: (context, child) => ThemeModeScope(
+            controller: _themeController,
+            child: child ?? const SizedBox.shrink(),
+          ),
+          home: _startAtHome ? const HomePage() : const SplashScreen(),
+          onGenerateRoute: _generateRoute,
+        );
+      },
     );
   }
+}
+
+Route<void> _generateRoute(RouteSettings settings) {
+  Widget page;
+
+  switch (settings.name) {
+    case '/about':
+      page = const AboutPage();
+      break;
+    case '/skills':
+      page = const SkillsPage();
+      break;
+    case '/experience':
+      page = const ExperiencePage();
+      break;
+    case '/projects':
+      page = const ProjectsPage();
+      break;
+    case '/contact':
+      page = const ContactPage();
+      break;
+    default:
+      page = const SplashScreen();
+  }
+
+  return PageRouteBuilder<void>(
+    settings: settings,
+    transitionDuration: const Duration(milliseconds: 220),
+    reverseTransitionDuration: const Duration(milliseconds: 180),
+    pageBuilder: (_, _, _) => page,
+    transitionsBuilder: (_, animation, _, child) {
+      final fade = CurvedAnimation(parent: animation, curve: Curves.easeOut);
+      return FadeTransition(opacity: fade, child: child);
+    },
+  );
 }

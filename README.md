@@ -5,17 +5,22 @@ A personal portfolio mobile application built with Flutter. It presents my profi
 ## Features
 
 - Animated splash screen
-- Smooth transition into the portfolio home page
+- Multi-page portfolio navigation with push and pop behavior
+- About, skills, experience, work, and contact sections
+- Project cards link to their GitHub repositories
+- Mobile navigation menu
+- Light and dark themes, starting in light mode
+- External links for email, WhatsApp, GitHub, and resume
 - Custom application branding and logo
 - Responsive Material 3 interface
-- DM Sans and Playfair Display typography
+- Editorial typography
 
 ## Technologies
 
 - Flutter
 - Dart
 - Material 3
-- Google Fonts
+- URL Launcher
 
 ## Project Status
 
@@ -63,8 +68,15 @@ lib/
   splash_screen.dart        # Animated launch screen
   pages/
     home_page.dart          # Portfolio home page
+    about_page.dart         # Personal information
+    skills_page.dart        # Technical skills
+    experience_page.dart    # Work and certifications
+    projects_page.dart      # Selected work
+    contact_page.dart       # Contact information
+    portfolio_page.dart     # Shared page layout and cards
   theme/
-    app_theme.dart          # Colors and text styles
+    app_theme.dart          # Light and dark themes
+    theme_mode_controller.dart # Theme selection and saved preference
 assets/
   images/
     logo.png                # Application logo
