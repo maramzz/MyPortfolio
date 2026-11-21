@@ -1,89 +1,78 @@
-# My Portfolio
+# Maram Zarrouk — Portfolio
 
-A personal portfolio mobile application built with Flutter. It presents my profile, interests, skills, and projects in a clean, simple interface.
+A personal portfolio app built with Flutter. It presents my background as a Computer Science student, along with my technical skills, experience, projects, and contact information.
 
 ## Features
 
-- Animated splash screen
-- Multi-page portfolio navigation with push and pop behavior
-- About, skills, experience, work, and contact sections
-- Project cards link to their GitHub repositories
-- Mobile navigation menu
-- Light and dark themes, starting in light mode
-- External links for email, WhatsApp, GitHub, and resume
-- Custom application branding and logo
-- Responsive Material 3 interface
-- Editorial typography
+- Animated splash screen and logo transition to the home page
+- Separate About, Skills, Experience, Work, and Contact pages
+- Push and pop page navigation
+- Light and dark themes; the app starts in light mode
+- Tappable project cards for the SkillUp and CampusFind GitHub repositories
+- Contact actions for email, WhatsApp, GitHub, and my resume
+- Responsive Material 3 layouts
 
-## Technologies
+## Built With
 
-- Flutter
-- Dart
+- Flutter and Dart
 - Material 3
-- URL Launcher
+- `url_launcher` for external links
 
-## Project Status
+## Run Locally
 
-This portfolio is under active development. More personal information, portfolio sections, and project details will be added over time.
+### Requirements
 
-## Getting Started
+- Flutter SDK compatible with the Dart constraint in `pubspec.yaml`
+- An available Flutter target, such as an Android or iOS device, desktop, or browser
 
-### Prerequisites
+### Setup
 
-- Flutter SDK
-- Dart SDK
-- An IDE with Flutter support, such as Visual Studio Code
+```bash
+git clone https://github.com/maramzz/MyPortfolio.git
+cd MyPortfolio
+flutter pub get
+flutter run
+```
 
-### Installation
+To run on a specific device, list available targets with `flutter devices`, then use `flutter run -d <device-id>`.
 
-1. Clone the repository:
+## Verify
 
-   ```bash
-   git clone https://github.com/maramzz/MyPortfolio.git
-   ```
-
-2. Enter the project directory:
-
-   ```bash
-   cd MyPortfolio
-   ```
-
-3. Install dependencies:
-
-   ```bash
-   flutter pub get
-   ```
-
-4. Run the application:
-
-   ```bash
-   flutter run
-   ```
+```bash
+flutter analyze
+flutter test
+```
 
 ## Project Structure
 
 ```text
 lib/
-  main.dart                 # Application entry point
-  splash_screen.dart        # Animated launch screen
+  main.dart
+  splash_screen.dart
   pages/
-    home_page.dart          # Portfolio home page
-    about_page.dart         # Personal information
-    skills_page.dart        # Technical skills
-    experience_page.dart    # Work and certifications
-    projects_page.dart      # Selected work
-    contact_page.dart       # Contact information
-    portfolio_page.dart     # Shared page layout and cards
+    home_page.dart
+    about_page.dart
+    skills_page.dart
+    experience_page.dart
+    projects_page.dart
+    contact_page.dart
+    portfolio_page.dart
   theme/
-    app_theme.dart          # Light and dark themes
-    theme_mode_controller.dart # Theme selection and saved preference
+    app_theme.dart
+    theme_mode_controller.dart
 assets/
   images/
-    logo.png                # Application logo
+    logo.png
 ```
+
+## Projects
+
+- [SkillUp](https://github.com/maramzz/SkillUp) — React learning platform.
+- [CampusFind](https://github.com/maramzz/CampusFind) — campus lost-and-found platform; work in progress.
 
 ## Author
 
-**Maram**
+**Maram Zarrouk**
 
-GitHub: [maramzz](https://github.com/maramzz)
+- GitHub: [@maramzz](https://github.com/maramzz)
+- Email: [maramzarrouk0@gmail.com](mailto:maramzarrouk0@gmail.com)
