@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/portfolio_navigation_sheet.dart';
+
 class PortfolioPage extends StatelessWidget {
   const PortfolioPage({
     super.key,
     required this.title,
     required this.label,
+    required this.currentRoute,
     required this.child,
+    this.floatingActionButton,
   });
 
   final String title;
   final String label;
+  final String currentRoute;
   final Widget child;
+  final Widget? floatingActionButton;
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +31,27 @@ class PortfolioPage extends StatelessWidget {
               )
             : null,
         title: Text(title),
+        actions: [
+          IconButton(
+            tooltip: 'Open navigation',
+            onPressed: () => showPortfolioNavigationSheet(
+              context,
+              activeRoute: currentRoute,
+            ),
+            icon: const Icon(Icons.menu_rounded),
+          ),
+          const SizedBox(width: 8),
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           key: PageStorageKey<String>('$title-scroll'),
-          padding: const EdgeInsets.fromLTRB(24, 32, 24, 40),
+          padding: EdgeInsets.fromLTRB(
+            24,
+            32,
+            24,
+            floatingActionButton == null ? 40 : 112,
+          ),
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 760),
@@ -65,11 +87,49 @@ class PortfolioPage extends StatelessWidget {
           ),
         ),
       ),
+      floatingActionButton: floatingActionButton,
     );
   }
 }
 
-class PortfolioCard extends StatelessWidget {
+class PortfolioLoadNotice extends StatelessWidget {
+  const PortfolioLoadNotice({
+    super.key,
+    required this.message,
+    this.onRetry,
+    this.isLoading = false,
+  });
+
+  final String message;
+  final VoidCallback? onRetry;
+  final bool isLoading;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return PortfolioCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(message, style: TextStyle(color: colors.onSurfaceVariant)),
+          if (isLoading) ...[
+            const SizedBox(height: 16),
+            const LinearProgressIndicator(),
+          ] else if (onRetry != null) ...[
+            const SizedBox(height: 12),
+            OutlinedButton.icon(
+              onPressed: onRetry,
+              icon: const Icon(Icons.refresh_rounded),
+              label: const Text('Retry'),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class PortfolioCard extends StatefulWidget {
   const PortfolioCard({
     super.key,
     required this.child,
@@ -82,22 +142,49 @@ class PortfolioCard extends StatelessWidget {
   final VoidCallback? onTap;
 
   @override
+  State<PortfolioCard> createState() => _PortfolioCardState();
+}
+
+class _PortfolioCardState extends State<PortfolioCard> {
+  bool _isHovered = false;
+
+  @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    return Container(
-      margin: margin,
+    final isInteractive = widget.onTap != null;
+    final borderColor = _isHovered && isInteractive
+        ? colors.primary.withAlpha(150)
+        : colors.outlineVariant;
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 180),
+      curve: Curves.easeOutCubic,
+      margin: widget.margin,
+      decoration: BoxDecoration(
+        color: _isHovered && isInteractive
+            ? colors.surfaceContainerLow
+            : colors.surface,
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: borderColor),
+      ),
       child: Material(
-        color: colors.surface,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(22),
-          side: BorderSide(color: colors.outlineVariant),
-        ),
+        color: Colors.transparent,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22)),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
-          onTap: onTap,
+          onTap: widget.onTap,
+          onHover: isInteractive
+              ? (hovered) {
+                  if (_isHovered != hovered) {
+                    setState(() => _isHovered = hovered);
+                  }
+                }
+              : null,
           child: SizedBox(
             width: double.infinity,
-            child: Padding(padding: const EdgeInsets.all(24), child: child),
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: widget.child,
+            ),
           ),
         ),
       ),

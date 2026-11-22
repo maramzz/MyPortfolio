@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'pages/contact_page.dart';
@@ -7,6 +9,7 @@ import 'pages/home_page.dart';
 import 'pages/projects_page.dart';
 import 'pages/skills_page.dart';
 import 'splash_screen.dart';
+import 'data/portfolio_store.dart';
 import 'theme/app_theme.dart';
 import 'theme/theme_mode_controller.dart';
 
@@ -23,6 +26,7 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
   late final ThemeModeController _themeController;
+  late final PortfolioStore _portfolioStore;
   GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
   bool _startAtHome = false;
 
@@ -30,11 +34,14 @@ class MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _themeController = ThemeModeController();
+    _portfolioStore = PortfolioStore();
+    unawaited(_portfolioStore.load());
   }
 
   @override
   void dispose() {
     _themeController.dispose();
+    _portfolioStore.dispose();
     super.dispose();
   }
 
@@ -65,9 +72,12 @@ class MyAppState extends State<MyApp> {
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,
           themeMode: _themeController.mode,
-          builder: (context, child) => ThemeModeScope(
-            controller: _themeController,
-            child: child ?? const SizedBox.shrink(),
+          builder: (context, child) => PortfolioStoreScope(
+            store: _portfolioStore,
+            child: ThemeModeScope(
+              controller: _themeController,
+              child: child ?? const SizedBox.shrink(),
+            ),
           ),
           home: _startAtHome ? const HomePage() : const SplashScreen(),
           onGenerateRoute: _generateRoute,
@@ -102,12 +112,27 @@ Route<void> _generateRoute(RouteSettings settings) {
 
   return PageRouteBuilder<void>(
     settings: settings,
-    transitionDuration: const Duration(milliseconds: 220),
-    reverseTransitionDuration: const Duration(milliseconds: 180),
+    transitionDuration: const Duration(milliseconds: 280),
+    reverseTransitionDuration: const Duration(milliseconds: 220),
     pageBuilder: (_, _, _) => page,
-    transitionsBuilder: (_, animation, _, child) {
-      final fade = CurvedAnimation(parent: animation, curve: Curves.easeOut);
-      return FadeTransition(opacity: fade, child: child);
+    transitionsBuilder: (context, animation, _, child) {
+      if (MediaQuery.disableAnimationsOf(context)) return child;
+
+      final curvedAnimation = CurvedAnimation(
+        parent: animation,
+        curve: Curves.easeOutCubic,
+        reverseCurve: Curves.easeInCubic,
+      );
+      return FadeTransition(
+        opacity: curvedAnimation,
+        child: SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(0.035, 0),
+            end: Offset.zero,
+          ).animate(curvedAnimation),
+          child: child,
+        ),
+      );
     },
   );
 }

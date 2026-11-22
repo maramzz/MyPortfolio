@@ -25,6 +25,7 @@ class ExperiencePage extends StatelessWidget {
     return PortfolioPage(
       title: 'Experience',
       label: 'MY JOURNEY',
+      currentRoute: '/experience',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

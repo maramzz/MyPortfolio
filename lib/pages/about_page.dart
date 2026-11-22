@@ -18,6 +18,7 @@ class AboutPage extends StatelessWidget {
     return PortfolioPage(
       title: 'About Me',
       label: 'A LITTLE ABOUT ME',
+      currentRoute: '/about',
       child: Column(
         children: [
           Text(

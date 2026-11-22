@@ -17,6 +17,7 @@ class ContactPage extends StatelessWidget {
     return PortfolioPage(
       title: 'Contact',
       label: 'LET’S CONNECT',
+      currentRoute: '/contact',
       child: PortfolioCard(
         child: Column(
           children: [
